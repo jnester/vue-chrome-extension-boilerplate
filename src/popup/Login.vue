@@ -1,25 +1,22 @@
 <template>
   <div class="col-md-12">
     <div class="card card-container">
-      <img
-        id="profile-img"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        class="profile-img-card"
-      />
-      <Form @submit="handleLogin" :validation-schema="schema">
+      <div >
         <div class="form-group">
           <label for="username">Username</label>
-          <Field name="username" type="text" class="form-control" />
-          <ErrorMessage name="username" class="error-feedback" />
+          <input type="text" v-model="user.username"/>
+          <!-- <Field name="username" type="text" class="form-control" />
+          <ErrorMessage name="username" class="error-feedback" /> -->
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <Field name="password" type="password" class="form-control" />
-          <ErrorMessage name="password" class="error-feedback" />
+          <input type="text" v-model="user.password"/>
+          <!-- <Field name="password" type="password" class="form-control" />
+          <ErrorMessage name="password" class="error-feedback" /> -->
         </div>
 
         <div class="form-group">
-          <button class="btn btn-primary btn-block" :disabled="loading">
+          <button class="btn btn-primary btn-block" :disabled="loading" @click="handleLogin">
             <span
               v-show="loading"
               class="spinner-border spinner-border-sm"
@@ -28,42 +25,48 @@
           </button>
         </div>
 
+        <button type="button" @click="getBookmarks">Get Bookmarks</button>
+
         <div class="form-group">
           <div v-if="message" class="alert alert-danger" role="alert">
             {{ message }}
           </div>
         </div>
-      </Form>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { Form, Field, ErrorMessage } from "vee-validate";
+// import { Form } from "vee-validate";
 import * as yup from "yup";
+import BookmarkService from "./services/bookmark.service";
 
 export default {
   name: "Login",
   components: {
-    Form,
-    Field,
-    ErrorMessage,
+    // Form,
+    // Field,
+    // ErrorMessage,
   },
   data() {
-    const schema = yup.object().shape({
-      username: yup.string().required("Username is required!"),
-      password: yup.string().required("Password is required!"),
-    });
+    // const schema = yup.object().shape({
+    //   username: yup.string().required("Username is required!"),
+    //   password: yup.string().required("Password is required!"),
+    // });
 
     return {
       loading: false,
       message: "",
-      schema,
+      user: {
+        username: "jnester2",
+        password: "Sing@5489"
+      }
     };
   },
   computed: {
     loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
+      return false; //this.$store.state.auth.status.loggedIn;
     },
   },
   created() {
@@ -72,12 +75,29 @@ export default {
     }
   },
   methods: {
+    getBookmarks(){
+      BookmarkService.getAll().then(
+      (response) => {
+        this.bookmarks = response.data;
+        console.log('bookmarks', this.bookmarks)
+      },
+      (error) => {
+        this.content =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+      }
+    );
+    },
     handleLogin(user) {
       this.loading = true;
 
-      this.$store.dispatch("auth/login", user).then(
+      this.$store.dispatch("auth/login", this.user).then(
         () => {
           // this.$router.push("/profile");
+          this.$parent.();
         },
         (error) => {
           this.loading = false;

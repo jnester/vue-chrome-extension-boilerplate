@@ -31,7 +31,7 @@
 		<el-button
 			type="primary"
 			size="default"
-			@click="injectTheScript"
+			@click="saveBookmark"
 		>Save Bookmark</el-button>
 
 		<!-- <button id="checkBookmarks">Check Bookmarks</button> -->
@@ -40,13 +40,17 @@
 			id="message"
 			style="color: green;"
 		></div>
+
+    <Login />
 	</div>
 </template>
 
 <script>
 import axios from 'axios'
+import Login from './Login.vue'
 
 export default {
+  components: {Login},
 	data() {
 		return {
 			msg: 'Welcome!',
@@ -101,7 +105,7 @@ export default {
         self.$refs.tags.focus();
 			})
 		},
-		injectTheScript() {
+		saveBookmark() {
 			// post("https://localhost:5000/api/bookmarks")
       var self = this;
 			chrome.tabs.getSelected(null, function (tab) {
@@ -112,7 +116,7 @@ export default {
 				}
 
 				axios
-					.post('https://localhost:' + self.port + '/api/bookmarks', data)
+					.post('https://localhost:' + self.port + '/api/bookmarks/save', data)
 					.then(() => window.close())
 
 				// $.ajax({
@@ -133,7 +137,7 @@ export default {
 		},
 		setMode() {
 			if (this.devMode) {
-				this.port = '44323'
+				this.port = '8080'
 			} else {
 				this.port = '5000'
 			}
