@@ -59,7 +59,7 @@ function configFunc(env, argv) {
           use: ['vue-style-loader', 'css-loader'],
         },
         {
-          test: /\.(png|jpg|gif|svg)$/,
+          test: /\.(woff(2)?|ttf|eot|png|jpg|gif|svg)(\?v=\d+\.\d+\.\d+)?$/,
           loader: 'file-loader',
           options: {
             name: '[name].[ext]?[hash]',

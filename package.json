@@ -5,8 +5,12 @@
     "url": "https://mubaidr.github.io/"
   },
   "dependencies": {
+    "axios": "^0.23.0",
     "bulma-fluent": "^0.4.3",
-    "vue": "^2.6.11"
+    "element-ui": "^2.15.6",
+    "vee-validate": "^3.4.13",
+    "vue": "^2.6.11",
+    "yup": "^0.32.11"
   },
   "description": "vue-chrome-extension-boilerplate",
   "devDependencies": {
