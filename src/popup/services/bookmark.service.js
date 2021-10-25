@@ -9,6 +9,18 @@ class BookmarkService {
     return axios.get(API_URL + 'getAll', { headers: authHeader() });
   }
 
+  getOne(url) {
+    return axios.get(API_URL + 'getOne?url=' + encodeURIComponent(url), { headers: authHeader() });
+  }
+
+  getTags() {
+    return axios.get(API_URL + 'tags', { headers: authHeader() });
+  }
+
+  save(bookmark) {
+    return axios.post(API_URL + 'save', bookmark, { headers: authHeader() });
+  }
+
 }
 
 export default new BookmarkService();
