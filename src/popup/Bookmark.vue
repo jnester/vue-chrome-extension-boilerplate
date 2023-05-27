@@ -135,6 +135,11 @@ export default {
 					self.getCurrentBookmark()
 				},
 				(error) => {
+					console.log('tags response', error)
+					if (error.toString().indexOf("Request failed with status code 401")){
+						self.$router.push("/")
+					}
+
 					this.content =
 						(error.response &&
 							error.response.data &&
@@ -163,10 +168,12 @@ export default {
 			// post("https://localhost:5000/api/bookmarks")
 			var self = this
 			chrome.tabs.getSelected(null, function (tab) {
+				console.log('tab', tab)
 				var tablink = tab.url
 				var data = {
 					url: tablink,
 					category: self.newCategory || self.category,
+					title: tab.title
 				}
 
 				BookmarkService.save(data).then(
@@ -174,6 +181,7 @@ export default {
 						window.close()
 					},
 					(error) => {
+						console.log('saveBookmark response', error)
 						this.content =
 							(error.response &&
 								error.response.data &&

@@ -7,16 +7,17 @@
 <script>
 export default {
   mounted(){
-      var user = localStorage.user
+      var user = this.currentUser;
+      console.log('user', user)
       if (user){
         console.log('user', user)
         this.$router.push('/bookmark');
       }
   },
   computed: {
-    // currentUser() {
-    //   return this.$store.state.auth.user;
-    // },
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
     // showAdminBoard() {
     //   if (this.currentUser && this.currentUser['roles']) {
     //     return this.currentUser['roles'].includes('ROLE_ADMIN');
